@@ -1,0 +1,89 @@
+---
+import type { GodotGame } from '../data/games';
+
+interface Props {
+  game: GodotGame;
+}
+
+const { game } = Astro.props;
+---
+
+<div class="overflow-hidden rounded-lg border border-slate-800 bg-slate-900">
+  <div class="aspect-video w-full bg-black">
+    <iframe
+      src={game.embedUrl}
+      title={game.title}
+      loading="lazy"
+      class="game-embed-iframe h-full w-full"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <div class="p-4">
+    <h3 class="font-semibold text-slate-100">{game.title}</h3>
+    <p class="mt-1 text-sm text-slate-400">{game.description}</p>
+    {game.repoUrl && (
+      <a href={game.repoUrl} target="_blank" rel="noopener noreferrer" class="mt-2 inline-block text-sm text-sky-400 hover:text-sky-300">
+        View source →
+      </a>
+    )}
+  </div>
+</div>
+
+<script>
+  // Embedded Godot games auto-focus their canvas once they finish booting, which makes
+  // the browser scroll that iframe into view even though the user never touched anything.
+  // Guard against any scroll that isn't preceded by real input for a short window after
+  // each embed loads, then get out of the way permanently — normal scrolling (including
+  // the user later clicking into a game on purpose) is never touched.
+  const win = window as unknown as { __gameEmbedScrollGuardInstalled?: boolean };
+  if (!win.__gameEmbedScrollGuardInstalled) {
+    win.__gameEmbedScrollGuardInstalled = true;
+
+    let allowScroll = false;
+    let allowTimer: ReturnType<typeof setTimeout>;
+    const markUserIntent = () => {
+      allowScroll = true;
+      clearTimeout(allowTimer);
+      allowTimer = setTimeout(() => {
+        allowScroll = false;
+      }, 200);
+    };
+    (['wheel', 'touchmove', 'pointerdown', 'click'] as const).forEach((type) =>
+      window.addEventListener(type, markUserIntent, { passive: true }),
+    );
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) markUserIntent();
+    });
+
+    let guardUntil = 0;
+    let lastGoodScrollY = window.scrollY;
+    const reclaimScroll = () => {
+      if (Date.now() < guardUntil && !allowScroll && window.scrollY !== lastGoodScrollY) {
+        window.scrollTo({ top: lastGoodScrollY, behavior: 'instant' });
+      } else if (allowScroll || Date.now() >= guardUntil) {
+        lastGoodScrollY = window.scrollY;
+      }
+    };
+    // Belt-and-suspenders: react to the 'scroll' event when the browser fires it, but
+    // also poll while a guard window is active in case a hijack doesn't dispatch one.
+    window.addEventListener('scroll', reclaimScroll);
+    setInterval(() => {
+      if (Date.now() < guardUntil) reclaimScroll();
+    }, 100);
+
+    const attachGuards = () => {
+      document.querySelectorAll<HTMLIFrameElement>('.game-embed-iframe').forEach((iframe) => {
+        if (iframe.dataset.guarded) return;
+        iframe.dataset.guarded = '1';
+        iframe.addEventListener('load', () => {
+          guardUntil = Date.now() + 15000;
+        });
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', attachGuards);
+    } else {
+      attachGuards();
+    }
+  }
+</script>

@@ -1,0 +1,104 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Section from '../components/Section.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import GameEmbed from '../components/GameEmbed.astro';
+import GameRecording from '../components/GameRecording.astro';
+import ModCard from '../components/ModCard.astro';
+import CreatureGallery from '../components/CreatureGallery.astro';
+import CreatureCarousel from '../components/CreatureCarousel.astro';
+import FeaturedProjectTile from '../components/FeaturedProjectTile.astro';
+import { softwareProjects } from '../data/projects';
+import { assembiotaGames, gameRecordings } from '../data/games';
+import { mods } from '../data/mods';
+import { creatureGifs, creatureStills } from '../data/creatures';
+import { elahiDataVisualizer } from '../data/featured';
+import { socialLinks } from '../data/social';
+import { withBase } from '../lib/url';
+---
+
+<Layout>
+  <div id="top">
+    <SiteHeader />
+
+    <section class="mx-auto max-w-7xl px-6 py-24 text-center">
+      <div class="relative inline-block">
+        <h1 class="font-name text-4xl text-slate-100 sm:text-5xl">Jacob Grandchamps</h1>
+        <img
+          src={withBase('media/misc/nuker-hero.png')}
+          alt="A posed True Nuker creature"
+          class="animate-float pointer-events-none absolute -right-40 top-1/3 hidden w-20 -translate-y-1/2 select-none xl:block"
+        />
+      </div>
+      <p class="mx-auto mt-4 max-w-xl text-slate-400">
+        A collection of my programming and design work, including software programs, Godot games, Minecraft mods and
+        other related projects.
+      </p>
+      <div class="mt-4 flex justify-center gap-6 text-sm">
+        {socialLinks.map((link) => (
+          <a href={link.url} target="_blank" rel="noopener noreferrer" class="font-bold text-orange-400 transition-colors hover:text-orange-300">
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <Section
+      id="games"
+      title="Godot Games"
+      description="Below are some work-in-progress games built on the Godot engine, using combinations of GDScript and C#. These games are much too large to demo online, but will be released on Steam within a year or so."
+    >
+      <div class="grid gap-8 lg:grid-cols-[280px_1fr] lg:items-start">
+        {gameRecordings.map((recording) => <GameRecording recording={recording} />)}
+      </div>
+    </Section>
+
+    <Section id="software" title="Software Projects" description="Things I've built, with a quick look at each in action.">
+      <div class="grid gap-8 lg:grid-cols-[380px_1fr] lg:items-start">
+        <div class="grid gap-6 content-start">
+          {softwareProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+        <FeaturedProjectTile project={elahiDataVisualizer} />
+      </div>
+    </Section>
+
+    <Section
+      id="assembiota"
+      title="Assembiota"
+      description="Dev-learning games built for the Assembiota project, successfully hosted in the browser. You can play them right here or click the links — these are live! Try clicking and dragging buttons to see what happens. These modules are meant to assist middle school children with learning via a game-based approach."
+    >
+      <div class="grid gap-6 sm:grid-cols-2">
+        {assembiotaGames.map((game) => <GameEmbed game={game} />)}
+      </div>
+    </Section>
+
+    <Section id="mods" title="Minecraft Mods" description="Published on CurseForge — click through for downloads and full details.">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {mods.map((mod) => <ModCard mod={mod} />)}
+      </div>
+
+      <h3 class="mt-14 text-lg font-semibold text-slate-100">Creature Gallery</h3>
+      <p class="mt-1 max-w-2xl text-slate-400">Animations of mobs I've modeled, including some from an upcoming mod.</p>
+      <div class="mt-6">
+        <CreatureGallery creatures={creatureGifs} />
+      </div>
+
+      <h3 class="mt-14 text-lg font-semibold text-slate-100">Renders &amp; Stills</h3>
+      <p class="mt-1 max-w-2xl text-slate-400">Still shots and 3D model renders from the same creatures.</p>
+      <div class="mt-6">
+        <CreatureCarousel creatures={creatureStills} />
+      </div>
+    </Section>
+
+    <footer class="border-t border-slate-800 py-10 text-center text-sm text-slate-500">
+      <div class="flex justify-center gap-6">
+        {socialLinks.map((link) => (
+          <a href={link.url} target="_blank" rel="noopener noreferrer" class="font-bold text-orange-400 transition-colors hover:text-orange-300">
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </footer>
+  </div>
+</Layout>

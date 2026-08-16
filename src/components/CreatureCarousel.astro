@@ -1,0 +1,61 @@
+---
+import type { Creature } from '../data/creatures';
+import { withBase } from '../lib/url';
+
+interface Props {
+  creatures: Creature[];
+}
+
+const { creatures } = Astro.props;
+---
+
+<div class="creature-carousel relative">
+  <div class="creature-carousel-track flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    {creatures.map((creature) => (
+      <div class="w-40 flex-shrink-0 snap-start overflow-hidden rounded-lg border border-slate-800 bg-slate-900 sm:w-48">
+        <img
+          src={withBase(creature.src)}
+          alt={creature.alt}
+          class="aspect-square w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    ))}
+  </div>
+
+  <button
+    type="button"
+    aria-label="Scroll left"
+    class="creature-carousel-prev absolute left-0 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 rounded-full border border-slate-700 bg-slate-900/90 p-2 text-slate-300 backdrop-blur transition-colors hover:text-white sm:flex"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+      <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+  <button
+    type="button"
+    aria-label="Scroll right"
+    class="creature-carousel-next absolute right-0 top-1/2 hidden translate-x-1/2 -translate-y-1/2 rounded-full border border-slate-700 bg-slate-900/90 p-2 text-slate-300 backdrop-blur transition-colors hover:text-white sm:flex"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+      <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.creature-carousel').forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>('.creature-carousel-track');
+    const prev = carousel.querySelector<HTMLButtonElement>('.creature-carousel-prev');
+    const next = carousel.querySelector<HTMLButtonElement>('.creature-carousel-next');
+    if (!track || !prev || !next) return;
+
+    const scrollByCard = (direction: 1 | -1) => {
+      const card = track.querySelector('div');
+      const amount = (card?.getBoundingClientRect().width ?? 200) + 16;
+      track.scrollBy({ left: amount * direction, behavior: 'smooth' });
+    };
+    prev.addEventListener('click', () => scrollByCard(-1));
+    next.addEventListener('click', () => scrollByCard(1));
+  });
+</script>

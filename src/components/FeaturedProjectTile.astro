@@ -1,0 +1,47 @@
+---
+import type { FeaturedProject } from '../data/featured';
+import { withBase } from '../lib/url';
+
+interface Props {
+  project: FeaturedProject;
+}
+
+const { project } = Astro.props;
+const aspectRatio = project.aspectRatio ?? '16/9';
+---
+
+<div class="flex flex-col overflow-hidden rounded-lg border border-slate-800 bg-slate-900">
+  {project.videoSrc ? (
+    <video
+      src={withBase(project.videoSrc)}
+      autoplay
+      muted
+      loop
+      playsinline
+      class="w-full object-cover"
+      style={`aspect-ratio: ${aspectRatio};`}
+    />
+  ) : (
+    <div
+      class="flex w-full flex-col items-center justify-center gap-3 border-b border-dashed border-slate-700 bg-slate-950 text-slate-600"
+      style={`aspect-ratio: ${aspectRatio};`}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-10 w-10">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+      <span class="text-sm font-medium">Video coming soon</span>
+    </div>
+  )}
+  <div class="p-5">
+    <h3 class="font-semibold text-slate-100">{project.title}</h3>
+    <p class="mt-1 text-sm text-slate-400">{project.description}</p>
+    {project.note && (
+      <p class="mt-3 rounded-md border border-amber-900/50 bg-amber-950/30 px-3 py-2 text-xs text-amber-400">{project.note}</p>
+    )}
+    {project.repoUrl && (
+      <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" class="mt-2 inline-block text-sm text-sky-400 hover:text-sky-300">
+        View source →
+      </a>
+    )}
+  </div>
+</div>

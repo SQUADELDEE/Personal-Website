@@ -1,0 +1,23 @@
+---
+import type { Creature } from '../data/creatures';
+import { withBase } from '../lib/url';
+
+interface Props {
+  creatures: Creature[];
+}
+
+const { creatures } = Astro.props;
+---
+
+<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+  {creatures.map((creature) => (
+    <div class="overflow-hidden rounded-lg border border-slate-800 bg-slate-900">
+      <img
+        src={withBase(creature.src)}
+        alt={creature.alt}
+        class="aspect-square w-full object-cover"
+        loading="lazy"
+      />
+    </div>
+  ))}
+</div>
