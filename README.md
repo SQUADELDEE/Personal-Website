@@ -1,6 +1,6 @@
 # Personal Website
 
-Portfolio site built with [Astro](https://astro.build) + Tailwind, deployed to GitHub Pages at
+Portfolio site built with [Astro](https://astro.build) and Tailwind, deployed to GitHub Pages at
 https://squadeldee.github.io/Personal-Website.
 
 ## Structure
