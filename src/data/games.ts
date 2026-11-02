@@ -1,25 +1,29 @@
 export interface GodotGame {
   title: string;
   description: string;
+  // Artwork shown on the card. The game itself only loads if the visitor clicks through.
+  thumbnail: string;
   // Full URL to the game's own GitHub Pages deployment (the index.html of the Godot HTML export).
-  embedUrl: string;
+  playUrl: string;
   repoUrl?: string;
 }
 
-// Games from the Assembiota project, embedded from their own GitHub Pages builds, e.g.
+// Games from the Assembiota project. Each links out to its own GitHub Pages build, e.g.
 // https://squadeldee.github.io/my-godot-game/
 export const assembiotaGames: GodotGame[] = [
   {
     title: 'Cell Game',
     description: 'Drag the organelles to the tray to learn more about them. Add or remove organelles to your liking!',
-    embedUrl: 'https://squadeldee.github.io/CellGame/',
+    thumbnail: '/media/games/cell-game-thumb.png',
+    playUrl: 'https://squadeldee.github.io/CellGame/',
     repoUrl: 'https://github.com/SQUADELDEE/CellGame',
   },
   {
     title: 'Assembiota Ecosystem',
     description:
       'Watch creatures grow, population balance, and introduce factors like predators. Zoom in to see things in detail. Temperature is in-dev for now.',
-    embedUrl: 'https://squadeldee.github.io/DemoAssembiota/',
+    thumbnail: '/media/games/assembiota-ecosystem-thumb.png',
+    playUrl: 'https://squadeldee.github.io/DemoAssembiota/',
     repoUrl: 'https://github.com/SQUADELDEE/DemoAssembiota',
   },
 ];

@@ -6,7 +6,7 @@ https://squadeldee.github.io/Personal-Website.
 ## Structure
 
 - `src/data/projects.ts` — software project entries (title, description, GIF/screenshot path, GitHub link)
-- `src/data/games.ts` — Godot games, embedded via iframe from their own GitHub Pages URLs
+- `src/data/games.ts` — Godot games: Assembiota games shown as thumbnails that link to their own GitHub Pages builds, plus looping gameplay recordings
 - `src/data/mods.ts` — Minecraft mods (screenshot/GIF + CurseForge link)
 - `public/media/` — images and GIFs referenced by the data files above
 
