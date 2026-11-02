@@ -73,7 +73,7 @@ import { withBase } from '../lib/url';
       title="Assembiota"
       description="Dev-learning games built for the Assembiota project, successfully hosted in the browser. Click a thumbnail to open a game in a new tab. These are live! Try clicking and dragging buttons to see what happens. These modules are meant to assist middle school children with learning via a game-based approach."
     >
-      <div class="grid gap-6 sm:grid-cols-2">
+      <div class="flex flex-wrap gap-6">
         {assembiotaGames.map((game) => <GameThumbnail game={game} />)}
       </div>
     </Section>
