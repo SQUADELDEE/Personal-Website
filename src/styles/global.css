@@ -25,3 +25,29 @@
 .animate-float {
   animation: float 4s ease-in-out infinite;
 }
+/* Creature gallery: endless right-to-left scroll. The track holds the list twice, so -50% (plus half the gap) lands on an identical frame. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+.marquee-track {
+  animation: marquee 45s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}

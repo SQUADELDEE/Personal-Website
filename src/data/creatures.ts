@@ -3,7 +3,7 @@ export interface Creature {
   alt: string;
 }
 
-// Work-in-progress creature animations, mostly from an unreleased mod. 12 entries — 3 rows of 4.
+// Work-in-progress creature animations, mostly from an unreleased mod. Shown in an auto-scrolling marquee.
 export const creatureGifs: Creature[] = [
   { src: '/media/creatures/baby-dragon-flap.gif', alt: 'Baby dragon flapping its wings' },
   { src: '/media/creatures/alien-idle.gif', alt: 'Alien creature idling' },
@@ -19,7 +19,7 @@ export const creatureGifs: Creature[] = [
   { src: '/media/creatures/true-nuker-walk.gif', alt: 'True Nuker creature walking' },
 ];
 
-// Still renders and screenshots — shown in a carousel, separate from the animated grid above.
+// Still renders and screenshots — shown in a carousel, separate from the animated marquee above.
 export const creatureStills: Creature[] = [
   { src: '/media/creatures/sailfish-render.webp', alt: 'Sailfish 3D model render' },
   { src: '/media/creatures/deer-sit.webp', alt: 'Deer sitting' },

@@ -7,17 +7,24 @@ interface Props {
 }
 
 const { creatures } = Astro.props;
+// The list is rendered twice so the track can loop seamlessly; the copy is hidden from screen readers.
+const loop = [...creatures.map((c) => ({ ...c, copy: false })), ...creatures.map((c) => ({ ...c, copy: true }))];
 ---
 
-<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-  {creatures.map((creature) => (
-    <div class="overflow-hidden rounded-lg border border-slate-800 bg-slate-900">
-      <img
-        src={withBase(creature.src)}
-        alt={creature.alt}
-        class="aspect-square w-full object-cover"
-        loading="lazy"
-      />
-    </div>
-  ))}
+<div class="marquee relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+  <div class="marquee-track flex w-max gap-4">
+    {loop.map((creature) => (
+      <div
+        class="w-40 flex-shrink-0 overflow-hidden rounded-lg border border-slate-800 bg-slate-900 sm:w-52"
+        aria-hidden={creature.copy ? 'true' : undefined}
+      >
+        <img
+          src={withBase(creature.src)}
+          alt={creature.copy ? '' : creature.alt}
+          class="aspect-square w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    ))}
+  </div>
 </div>
