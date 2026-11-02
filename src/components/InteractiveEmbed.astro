@@ -1,0 +1,37 @@
+---
+interface Props {
+  url: string;
+  title: string;
+}
+
+const { url, title } = Astro.props;
+---
+
+<div class="interactive-embed relative h-[70vh] max-h-[720px] min-h-[420px] w-full overflow-hidden rounded-lg border border-slate-800 bg-slate-900">
+  <iframe src={url} title={title} loading="lazy" class="h-full w-full border-0"></iframe>
+  <!-- The map uses the scroll wheel and touch drags for zoom/pan. This overlay keeps those from hijacking page scroll until the visitor opts in. -->
+  <button
+    type="button"
+    class="interactive-embed-overlay absolute inset-0 flex items-center justify-center bg-slate-950/40 transition-colors hover:bg-slate-950/20"
+  >
+    <span class="rounded-md bg-slate-950/80 px-4 py-2 text-sm font-semibold text-white shadow-lg ring-1 ring-white/20">
+      Click to explore the map
+    </span>
+  </button>
+</div>
+<a href={url} target="_blank" rel="noopener noreferrer" class="mt-3 inline-block text-sm font-semibold text-orange-400 hover:text-orange-300">
+  Open full screen →
+</a>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.interactive-embed').forEach((embed) => {
+    const overlay = embed.querySelector<HTMLButtonElement>('.interactive-embed-overlay');
+    if (!overlay) return;
+    overlay.addEventListener('click', () => overlay.classList.add('hidden'));
+    // Lock it again once the visitor moves on, so scrolling past the map works normally.
+    embed.addEventListener('mouseleave', () => overlay.classList.remove('hidden'));
+    document.addEventListener('pointerdown', (e) => {
+      if (!embed.contains(e.target as Node)) overlay.classList.remove('hidden');
+    });
+  });
+</script>

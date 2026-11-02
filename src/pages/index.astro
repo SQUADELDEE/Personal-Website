@@ -9,6 +9,7 @@ import ModCard from '../components/ModCard.astro';
 import CreatureGallery from '../components/CreatureGallery.astro';
 import CreatureCarousel from '../components/CreatureCarousel.astro';
 import FeaturedProjectTile from '../components/FeaturedProjectTile.astro';
+import InteractiveEmbed from '../components/InteractiveEmbed.astro';
 import { softwareProjects } from '../data/projects';
 import { assembiotaGames, gameRecordings } from '../data/games';
 import { mods } from '../data/mods';
@@ -66,6 +67,14 @@ import { withBase } from '../lib/url';
         </div>
         <FeaturedProjectTile project={elahiDataVisualizer} />
       </div>
+    </Section>
+
+    <Section
+      id="pixel-campus"
+      title="Pixel Campus"
+      description="An unofficial, student-made pixel-art map of Brown University's campus with live dining hours, weather and day/night lighting. Not affiliated with Brown University."
+    >
+      <InteractiveEmbed url="https://squadeldee.github.io/bitcrushed_campus_map/" title="Pixel Campus interactive map" />
     </Section>
 
     <Section
